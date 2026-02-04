@@ -1,0 +1,32 @@
+{
+  "name": "question-answer-api-tutorial",
+  "version": "1.0.0",
+  "description": "Express - Question Answer Api",
+  "keywords": [
+    "express",
+    "rest",
+    "api"
+  ],
+  "license": "MIT",
+  "author": "mustafa kemal algan",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.1.5",
+    "multer": "^2.0.2",
+    "nodemailer": "^8.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
