@@ -2,17 +2,18 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const Question = require("./Question");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
 
     name: {
         type: String,
-        require: [true, "Please provide a name"]
+        required: [true, "Please provide a name"]
     },
     email: {
         type: String,
-        require: [true, "Please provide a email"],
+        required: [true, "Please provide a email"],
         unique: true,
         // match: [
 
@@ -29,7 +30,7 @@ const UserSchema = new Schema({
     password: {
         type: String,
         minlength: [6, "Please provide a password with min length 6"],
-        require: [true, "Please provide a password"],
+        required: [true, "Please provide a password"],
         select: false
     },
     createdAt: {
@@ -100,16 +101,13 @@ UserSchema.methods.getResetPasswordTokenFromUser = function () {
 
 //Pre Hooks
 
-UserSchema.pre('save', async function (next) {
-    if (this.isModified('password')) {
-        this.password = await bcrypt.hash(this.password, 10);
-        console.log(this.password);
+UserSchema.pre("save", async function () {
+    if (!this.isModified("password")) {
+        return;
     }
 
-    // next();
+    this.password = await bcrypt.hash(this.password, 10);
 });
-
-
 
 // UserSchema.pre("save", function () {
 //     console.log(this.password + "--1");
@@ -126,6 +124,13 @@ UserSchema.pre('save', async function (next) {
 //         });
 //     });
 // });
+
+
+UserSchema.post("findByIdAndDelete", async function () {
+    await Question.deleteMany({
+        user: this._id
+    });
+});
 
 
 

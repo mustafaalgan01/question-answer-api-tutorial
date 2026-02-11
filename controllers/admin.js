@@ -20,13 +20,11 @@ const blockUser = asyncErrorWrapper(async (req, res, next) => {
 const deleteUser = asyncErrorWrapper(async (req, res, next) => {
     const { id } = req.params;
 
-    const user = await User.findById(id);
+    const user = await User.findByIdAndDelete(id);
 
     if (!user) {
         return next(new CustomError("User not found", 404));
     }
-
-    await user.deleteOne();
 
     return res.status(200).json({
         success: true,

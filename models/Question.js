@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const Schema = mongoose.Schema;
 
@@ -23,9 +24,29 @@ const QuestionSchema = new Schema({
         type: mongoose.Schema.ObjectId,
         required: true,
         ref: "User"
-    }
+    }, likes: [{
+        type: mongoose.Schema.ObjectId,
+        ref: "User"
+    }]
 
 
 });
+
+QuestionSchema.pre("save", function (next) {
+
+    if (!this.isModified("title")) {
+        return next();
+    }
+    this.slug = this.makeSlug();
+});
+QuestionSchema.methods.makeSlug = function () {
+    return slugify(this.title, {
+        replacement: '-',
+        remove: /[*+~.()'"!:@]/g,
+        lower: true
+    })
+};
+
+
 
 module.exports = mongoose.model("Question", QuestionSchema);
