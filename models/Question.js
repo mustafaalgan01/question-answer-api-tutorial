@@ -27,17 +27,20 @@ const QuestionSchema = new Schema({
     }, likes: [{
         type: mongoose.Schema.ObjectId,
         ref: "User"
+    }], answers: [{
+        type: mongoose.Schema.ObjectId,
+        ref: "Answer"
     }]
 
 
 });
 
-QuestionSchema.pre("save", function (next) {
+QuestionSchema.pre("save", function () {
 
-    if (!this.isModified("title")) {
-        return next();
+    if (this.isModified("title")) {
+        this.slug = this.makeSlug();
     }
-    this.slug = this.makeSlug();
+
 });
 QuestionSchema.methods.makeSlug = function () {
     return slugify(this.title, {
@@ -45,8 +48,8 @@ QuestionSchema.methods.makeSlug = function () {
         remove: /[*+~.()'"!:@]/g,
         lower: true
     })
-};
 
+};
 
 
 module.exports = mongoose.model("Question", QuestionSchema);
