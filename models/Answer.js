@@ -59,6 +59,8 @@ AnswerSchema.pre("save", async function () {
     // }
 
     question.answers.push(this._id);
+    question.answerCount = question.answers.length;
+
     await question.save();
 
     // next();
