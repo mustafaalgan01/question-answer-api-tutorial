@@ -149,7 +149,7 @@ const deleteAnswer = asyncErrorWrapper(async (req, res, next) => {
     question.answers = question.answers.filter(
         (id) => id.toString() !== answer_id
     );
-
+ 
     question.answerCount = question.answers.length;
 
     await question.save();
@@ -176,7 +176,7 @@ const likeAnswer = asyncErrorWrapper(async (req, res, next) => {
     }
 
     answer.likes.push(req.user.id);
- 
+
     await answer.save();
 
     res.status(200).json({
